@@ -1,10 +1,9 @@
-![1777341580580](image/README/1777341580580.png)
+<img width="1127" height="229" alt="image" src="https://github.com/user-attachments/assets/3e5c67e3-9c57-4be4-bdd5-024a4b302293" />
 
 > A smart home environment monitoring system that keeps tabs on temperature, humidity, rainfall, and gas levels — with remote LED control on top.
 
-![Status](https://img.shields.io/badge/status-in%20progress-yellow)
-![License](https://img.shields.io/badge/license-MIT-blue)
-
+![Static Badge](https://img.shields.io/badge/STATUS-In--progress-%23E16B16?style=for-the-badge)
+![Static Badge](https://img.shields.io/badge/LICENSE-MIT-blue?style=for-the-badge)
 
 ## 📌 What is this?
 
@@ -41,12 +40,13 @@ Same idea. Better execution. Different mindset. Let's build this properly. 🛠�
 ## 🛠️ Tech Stack
 
 **Software**
-![HTML](https://img.shields.io/badge/HTML-E34F26?style=flat&logo=html5&logoColor=white)
-![CSS](https://img.shields.io/badge/CSS-1572B6?style=flat&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
-![PHP](https://img.shields.io/badge/PHP-777BB4?style=flat&logo=php&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=mysql&logoColor=white)
-![MQTT](https://img.shields.io/badge/MQTT-660066?style=flat&logo=mqtt&logoColor=white)
+
+![Static Badge](https://img.shields.io/badge/HTML-%23E5532D?style=for-the-badge&logo=html5&logoColor=white)
+![Static Badge](https://img.shields.io/badge/CSS-%230277BD?style=for-the-badge&logo=css&logoColor=white)
+![Static Badge](https://img.shields.io/badge/JavaScript-%23F7E025?style=for-the-badge&logo=javascript&logoColor=black)
+![Static Badge](https://img.shields.io/badge/PHP-%23787CB4?style=for-the-badge&logo=php&logoColor=white)
+![Static Badge](https://img.shields.io/badge/MySQL-%23086590?style=for-the-badge&logo=mysql&logoColor=white)
+![Static Badge](https://img.shields.io/badge/MQTT-%236B086B?style=for-the-badge&logo=mqtt&logoColor=white)
 
 **Hardware**
 | Component | Description |
