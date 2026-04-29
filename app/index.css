@@ -1,0 +1,275 @@
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
+
+:root {
+    --base-color: #0A0A0A;
+    --card-primary-color: #1A1A1A;
+    --card-secondary-color: #2E2E2E;
+
+    --white-font: #F5F5F5;
+
+    --color-red: #FF6B6B;
+    --color-yellow: #FFE08A;
+    --color-green: #6BCB77;
+    --color-blue: #85C1E9;
+
+    --temp-cold-color: var(--color-blue);
+    --temp-warm-color: var(--color-yellow);
+    --temp-hot-color: var(--color-red);
+
+    --humid-dry-color: var(--color-yellow);
+    --humid-normal-color: var(--color-green);
+    --humid-humid-color: var(--color-blue);
+
+    --gas-safe-color: var(--color-green);
+    --gas-warning-color: var(--color-yellow);
+    --gas-danger-color: var(--color-red);
+
+    --led-red-color: var(--color-red);
+    --led-green-color: var(--color-green);
+    --led-blue-color: var(--color-blue);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Titillium Web", "JetBrains Mono", serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+    background-color: var(--base-color);
+}
+
+.dashboard_wrapper {
+    width: 80%;
+    height: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+        "temp"
+        "humid"
+        "rain"
+        "gas"
+        "ledControl";
+    gap: 10px;
+}
+
+.dashboard-card--temp {
+    grid-area: temp;
+}
+
+.dashboard-card--humid {
+    grid-area: humid;
+}
+
+.dashboard-card--chart {
+    grid-area: tempHumidChart;
+}
+
+.dashboard-card--rain {
+    grid-area: rain;
+}
+
+.dashboard-card--gas {
+    grid-area: gas;
+}
+
+.dashboard-card--led {
+    grid-area: ledControl
+}
+
+.dashboard-card {
+    background-color: var(--card-primary-color);
+    border: 3px solid var(--card-secondary-color);
+    border-radius: 7px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+}
+
+.dashboard-card__header {
+    color: var(--white-font);
+    position: absolute;
+    top: 10px;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.dashboard-card__value {
+    font-weight: 600;
+    font-size: 2.2rem;
+}
+
+.dashboard-card__led-control {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 70%;
+    height: 70%;
+    gap: 10px;
+}
+
+.led-button {
+    background-color: var(--card-primary-color);
+    color: var(--white-font);
+    width: 30%;
+    height: 50%;
+    font-size: 1.1rem;
+    box-sizing: border-box;
+    border: 2px solid var(--card-secondary-color);
+    border-radius: 5px;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.led-button:hover {
+    transform: scale(1.06);
+}
+
+.led-button__indicator {
+    width: 17px;
+    height: 17px;
+    background-color: var(--card-secondary-color);
+    border-radius: 50%;
+    position: absolute;
+    top: 130%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.led-button--red:hover {
+    background-color: var(--led-red-color);
+    color: var(--white-font);
+}
+
+.led-button--green:hover {
+    background-color: var(--led-green-color);
+    color: var(--white-font);
+}
+
+.led-button--blue:hover {
+    background-color: var(--led-blue-color);
+    color: var(--white-font);
+}
+
+.dashboard-card--chart {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .dashboard_wrapper {
+        grid-template-columns: 0.5fr 0.75fr 0.75fr 0.5fr;
+        grid-template-areas:
+            "temp temp humid humid"
+            "rain rain gas gas"
+            ". ledControl ledControl .";
+    }
+
+    .dashboard-card {
+        min-height: 250px;
+    }
+
+    .dashboard-card__led-control {
+        flex-direction: column;
+    }
+
+    .led-button {
+        width: 100%;
+        height: 25%;
+    }
+
+    .dashboard-card__value {
+        font-size: 2.4rem;
+    }
+
+    .led-button__indicator {
+        top: 50%;
+        left: 10%;
+        transform: translateY(-50%);
+    }
+
+    .led-button:hover .led-button__indicator {
+        display: none;
+    }
+}
+
+@media (min-width: 1024px) {
+    body {
+        padding: 0;
+    }
+
+    .dashboard_wrapper {
+        grid-template-columns: 1.5fr 1.5fr 1.5fr 1.5fr;
+        grid-template-areas:
+            "temp temp humid humid"
+            "rain gas gas ledControl";
+    }
+
+    .dashboard-card {
+        min-height: 270px;
+    }
+
+    .led-button {
+        height: 25%;
+        font-size: 1.2rem;
+    }
+
+    .dashboard-card__header {
+        font-size: 1.4rem;
+    }
+
+    .dashboard-card__value {
+        font-size: 3.2rem;
+    }
+}
+
+@media (min-width: 1536px) {
+    .dashboard-card--chart {
+        display: block;
+    }
+
+    .dashboard_wrapper {
+        grid-template-areas:
+            "temp humid tempHumidChart tempHumidChart"
+            "rain gas gas ledControl";
+
+        max-width: 1400px;
+    }
+}
+
+/* 
+    * JUST A PLACEHOLDER 
+    * DELETE LATER AFTER FINISHING JAVASCRIPT
+*/
+
+#temp-value {
+    color: var(--temp-cold-color);
+}
+
+#humid-value {
+    color: var(--humid-normal-color);
+}
+
+#gas-value {
+    color: var(--gas-safe-color);
+}
+
+#rain-value {
+    color: #FF6B6B;
+}
+
+.led-button--green .led-button__indicator {
+    background-color: var(--led-green-color);
+}
+
+.led-button--blue .led-button__indicator {
+    background-color: var(--led-blue-color);
+}
