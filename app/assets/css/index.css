@@ -20,13 +20,16 @@
     --humid-normal-color: var(--color-green);
     --humid-humid-color: var(--color-blue);
 
+    --rain-rain-color: var(--color-blue);
+    --rain-dry-color: var(--color-green);
+
     --gas-safe-color: var(--color-green);
     --gas-warning-color: var(--color-yellow);
     --gas-danger-color: var(--color-red);
 
-    --led-red-color: var(--color-red);
-    --led-green-color: var(--color-green);
-    --led-blue-color: var(--color-blue);
+    --led-indicator-red: var(--color-red);
+    --led-indicator-green: var(--color-green);
+    --led-indicator-blue: var(--color-blue);
 }
 
 * {
@@ -105,6 +108,51 @@ body {
 .dashboard-card__value {
     font-weight: 600;
     font-size: 2.2rem;
+    text-transform: uppercase;
+}
+
+#temp-value.value--cold{
+    color: var(--temp-cold-color);
+}
+
+#temp-value.value--warm{
+    color: var(--temp-warm-color);
+}
+
+#temp-value.value--hot{
+    color: var(--temp-hot-color);
+}
+
+#humid-value.value--dry{
+    color: var(--humid-dry-color);
+}
+
+#humid-value.value--normal{
+    color: var(--humid-normal-color);
+}
+
+#humid-value.value--humid{
+    color: var(--humid-humid-color);
+}
+
+#rain-value.value--rain{
+    color: var(--rain-rain-color);
+}
+
+#rain-value.value--dry{
+    color: var(--rain-dry-color);
+}
+
+#gas-value.value--safe{
+    color: var(--gas-safe-color);
+}
+
+#gas-value.value--warning{
+    color: var(--gas-warning-color);
+}
+
+#gas-value.value--danger{
+    color: var(--gas-danger-color);
 }
 
 .dashboard-card__led-control {
@@ -143,21 +191,19 @@ body {
     top: 130%;
     left: 50%;
     transform: translateX(-50%);
+    transition: all 0.5s ease;
 }
 
-.led-button--red:hover {
-    background-color: var(--led-red-color);
-    color: var(--white-font);
+.led-button--red .led-button__indicator--on {
+    background-color: var(--led-indicator-red);
 }
 
-.led-button--green:hover {
-    background-color: var(--led-green-color);
-    color: var(--white-font);
+.led-button--green .led-button__indicator--on {
+    background-color: var(--led-indicator-green);
 }
 
-.led-button--blue:hover {
-    background-color: var(--led-blue-color);
-    color: var(--white-font);
+.led-button--blue .led-button__indicator--on {
+    background-color: var(--led-indicator-blue);
 }
 
 .dashboard-card--chart {
@@ -194,10 +240,6 @@ body {
         top: 50%;
         left: 10%;
         transform: translateY(-50%);
-    }
-
-    .led-button:hover .led-button__indicator {
-        display: none;
     }
 }
 
@@ -243,33 +285,4 @@ body {
 
         max-width: 1400px;
     }
-}
-
-/* 
-    * JUST A PLACEHOLDER 
-    * DELETE LATER AFTER FINISHING JAVASCRIPT
-*/
-
-#temp-value {
-    color: var(--temp-cold-color);
-}
-
-#humid-value {
-    color: var(--humid-normal-color);
-}
-
-#gas-value {
-    color: var(--gas-safe-color);
-}
-
-#rain-value {
-    color: #FF6B6B;
-}
-
-.led-button--green .led-button__indicator {
-    background-color: var(--led-green-color);
-}
-
-.led-button--blue .led-button__indicator {
-    background-color: var(--led-blue-color);
 }
