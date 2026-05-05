@@ -47,7 +47,7 @@ body {
     background-color: var(--base-color);
 }
 
-.dashboard_wrapper {
+.dashboard-wrapper {
     width: 80%;
     height: auto;
     display: grid;

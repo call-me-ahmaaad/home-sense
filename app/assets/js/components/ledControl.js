@@ -11,7 +11,6 @@ export function initLedControl() {
         button.addEventListener("click", () => {
             const color = button.dataset.led;
             const indicator = button.querySelector(".led-button__indicator");
-            const customColor = button.dataset.color;
 
             ledState[color] = !ledState[color];
 
