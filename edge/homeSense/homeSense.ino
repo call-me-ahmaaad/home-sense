@@ -31,46 +31,50 @@ The dashboard is designed to work with microcontroller-based devices (e.g., ESP3
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 
+// WiFi, MQTT, and other credentials. See config.example.h for the template.
 #include "config.h"
 // ---------- Libraries ----------
 
 // ---------- Pin Configuration ----------
+// RS485 Serial pins for XY-MD02 communication via Modbus
 #define RX_PIN 16
 #define TX_PIN 17
 
-#define RAIN_SENSOR_PIN 5
-#define GAS_SENSOR_PIN 32
+#define RAIN_SENSOR_PIN 5  // Digital input - LOW = rain detected (active low)
+#define GAS_SENSOR_PIN 32  // Analog input - ADC pin for MQ-5 gas sensor
 // ---------- Pin Configuration ----------
 
 // ---------- Timer Section ----------
+// Non-blocking timer to control sensor read and publish interval
 unsigned long previousMillis_process = 0;
-unsigned long interval_process = 2000;
+unsigned long interval_process = 2000;  // Read and publish every 2 seconds
 // ---------- Intervals ----------
 
 // ---------- MQTT Configuration ----------
-String TOPIC_INIT = "home_sense";
+String TOPIC_INIT = "home_sense";  // Base topic, full topic: home_sense/<chipID>
 // ---------- MQTT Configuration ----------
 
 // ---------- Event Handlers & Object ----------
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-HardwareSerial RS485Serial(2);
-ModbusMaster node;
+HardwareSerial RS485Serial(2);  // Use UART2 for RS485 communication
+ModbusMaster node;              // Modbus master instance for XY-MD02
 // ---------- Event Handlers & Object ----------
 
 // ---------- Main Variables ----------
 float temperature;
 float humidity;
 
-String rainStatus;
+String rainStatus;  // Human-readable rain status: "RAIN" or "DRY"
 bool isRaining;
 
-float gasLevel;
+float gasLevel;  // Gas level in ppm, converted from ADC raw value
 
-String chipID;
+String chipID;  // Unique device identifier, assigned once in setup()
 // ---------- Main Variables ----------
 
+// Returns the unique chip ID derived from ESP32's eFuse MAC address
 String getChipID() {
   uint64_t chipId = ESP.getEfuseMac();
   char chipIdStr[13];
@@ -78,24 +82,31 @@ String getChipID() {
   return String(chipIdStr);
 }
 
+// Reads rain sensor and updates isRaining and rainStatus
 void getRainStatus() {
-  isRaining = !digitalRead(RAIN_SENSOR_PIN);
+  isRaining = !digitalRead(RAIN_SENSOR_PIN);  // Active low: LOW = rain detected
   rainStatus = isRaining ? "RAIN" : "DRY";
 }
 
+// Reads MQ-5 gas sensor ADC value and converts it to ppm
+// Formula based on MQ-5 datasheet, calibrated for LPG with R0 = 10.0 kΩ
+// Note: R0 should be calibrated in clean air for accurate readings
 void getGasLevel() {
   int adcValue = analogRead(GAS_SENSOR_PIN);
 
-  float voltage = adcValue * (3.3 / 4095.0);
+  float voltage = adcValue * (3.3 / 4095.0);  // Convert ADC (12-bit) to voltage
 
-  float RL = 10.0;
-  float Rs = ((3.3 - voltage) / voltage) * RL;
+  float RL = 10.0;                              // Load resistance in kΩ
+  float Rs = ((3.3 - voltage) / voltage) * RL;  // Sensor resistance
 
-  float R0 = 10.0;
+  float R0 = 10.0;  // Baseline resistance in clean air
   float ratio = Rs / R0;
-  gasLevel = 26.572 * pow(ratio, -2.045);
+  gasLevel = 26.572 * pow(ratio, -2.045);  // Datasheet curve fitting for LPG
 }
 
+// Reads temperature and humidity from XY-MD02 via Modbus RTU
+// Register 0x0001: Temperature (raw value / 10.0 = °C)
+// Register 0x0002: Humidity    (raw value / 10.0 = %)
 void getTemperatureHumidity() {
   uint8_t result;
   uint16_t data[2];
@@ -111,6 +122,7 @@ void getTemperatureHumidity() {
   }
 }
 
+// Prints current device and sensor data to Serial Monitor for debugging
 void printData() {
   Serial.print("WiFi Status : ");
   Serial.println(WiFi.status() == WL_CONNECTED ? "Connected" : "Disconnected");
@@ -147,6 +159,7 @@ void printData() {
   Serial.println();
 }
 
+// ---------- WiFi Event Handlers ----------
 void WiFiStationConnecting() {
   Serial.println("Connecting device to WiFi access point...");
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
@@ -162,6 +175,7 @@ void WiFiGotIP(WiFiEvent_t event, WiFiEventInfo_t info) {
   Serial.println(WiFi.localIP());
 }
 
+// Auto-reconnect to WiFi when disconnected
 void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
   Serial.println("Device disconnected from WiFi access point!");
   Serial.print("Reason: ");
@@ -169,7 +183,9 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 
   WiFiStationConnecting();
 }
+// ---------- WiFi Event Handlers ----------
 
+// Publishes a payload to the given MQTT topic and logs the result
 void publishMQTT(String topic, String payload) {
   bool publish = client.publish(topic.c_str(), payload.c_str());
 
@@ -182,12 +198,14 @@ void publishMQTT(String topic, String payload) {
   Serial.println();
 }
 
+// Attempts to reconnect to MQTT broker if disconnected
+// Skips if WiFi is not connected to avoid blocking
 void reconnectMQTT() {
   if (WiFi.status() != WL_CONNECTED) return;
 
   while (!client.connected()) {
     Serial.println("Attempting connection to MQTT...");
-    String clientID = TOPIC_INIT + chipID;
+    String clientID = TOPIC_INIT + chipID;  // Unique client ID per device
 
     if (client.connect(clientID.c_str())) {
       Serial.println("Connected to MQTT!");
@@ -200,6 +218,7 @@ void reconnectMQTT() {
   }
 }
 
+// Builds and publishes a JSON payload containing all sensor data to MQTT
 void sendSensorPayload() {
   String topic = TOPIC_INIT + "/" + chipID;
 
@@ -211,7 +230,7 @@ void sendSensorPayload() {
   doc["temperature"] = temperature;
   doc["humidity"] = humidity;
   doc["rain_status"] = isRaining;
-  doc["gas_level"] = round(gasLevel * 100) / 100.0;
+  doc["gas_level"] = round(gasLevel * 100) / 100.0;  // Rounded to 2 decimal places
 
   String payload;
   serializeJson(doc, payload);
@@ -230,7 +249,7 @@ void setup() {
   pinMode(RAIN_SENSOR_PIN, INPUT);
   pinMode(GAS_SENSOR_PIN, INPUT);
 
-  chipID = getChipID();
+  chipID = getChipID();  // Assigned once, used throughout the program
 
   WiFi.disconnect(true);
   WiFi.mode(WIFI_STA);
@@ -257,11 +276,13 @@ void setup() {
 void loop() {
   unsigned long currentMillis = millis();
 
+  // Ensure MQTT stays connected, reconnect if dropped
   if (!client.connected()) {
     reconnectMQTT();
   }
-  client.loop();
+  client.loop();  // Handle incoming MQTT messages and maintain connection
 
+  // Non-blocking interval: read sensors and publish every interval_process ms
   if (currentMillis - previousMillis_process >= interval_process) {
     getTemperatureHumidity();
 
