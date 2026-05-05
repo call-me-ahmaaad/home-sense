@@ -47,15 +47,7 @@ unsigned long previousMillis_process = 0;
 unsigned long interval_process = 2000;
 // ---------- Intervals ----------
 
-// ---------- WiFi Credential ----------
-#define WIFI_SSID "YOUR_WIFI_SSID"
-#define WIFI_PASSWORD "YOUR_WIFI_PASSWORD"
-// ---------- WiFi Credential ----------
-
 // ---------- MQTT Configuration ----------
-#define MQTT_SERVER "YOUR_MQTT_SERVER"
-#define MQTT_PORT "YOUR_MQTT_PORT" // Without double quote
-
 String TOPIC_INIT = "home_sense";
 // ---------- MQTT Configuration ----------
 
