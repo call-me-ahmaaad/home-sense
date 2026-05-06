@@ -71,8 +71,16 @@ bool isRaining;
 
 float gasLevel;  // Gas level in ppm, converted from ADC raw value
 
-String chipID;  // Unique device identifier, assigned once in setup()
+String chipID;      // Unique device identifier, assigned once in setup()
+String macAddress;  // Unique hardware network identifier (without colons), assigned once in setup()
 // ---------- Main Variables ----------
+
+// Returns the unique MAC Address of ESP32
+String getMACAddress() {
+  String mac = WiFi.macAddress();
+  mac.replace(":", "");
+  return mac;
+}
 
 // Returns the unique chip ID derived from ESP32's eFuse MAC address
 String getChipID() {
@@ -134,7 +142,7 @@ void printData() {
   Serial.println(WiFi.status() == WL_CONNECTED ? WiFi.localIP().toString() : "0.0.0.0");
 
   Serial.print("MAC Address : ");
-  Serial.println(WiFi.macAddress());
+  Serial.println(macAddress);
 
   Serial.print("Chip ID     : ");
   Serial.println(chipID);
@@ -186,8 +194,8 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info) {
 // ---------- WiFi Event Handlers ----------
 
 // Publishes a payload to the given MQTT topic and logs the result
-void publishMQTT(String topic, String payload) {
-  bool publish = client.publish(topic.c_str(), payload.c_str());
+void publishMQTT(String topic, String payload, bool retain) {
+  bool publish = client.publish(topic.c_str(), payload.c_str(), retain);
 
   Serial.print("Publish Status  : ");
   Serial.println(publish ? "DELIVERED" : "FAILED");
@@ -203,11 +211,22 @@ void publishMQTT(String topic, String payload) {
 void reconnectMQTT() {
   if (WiFi.status() != WL_CONNECTED) return;
 
+  String lwtTopic = TOPIC_INIT + "/" + macAddress + "/status";
+  String lwtMessageOffline = "{\"status\":\"offline\"}";
+  String lwtMessageOnline = "{\"status\":\"online\"}";
+
   while (!client.connected()) {
     Serial.println("Attempting connection to MQTT...");
-    String clientID = TOPIC_INIT + chipID;  // Unique client ID per device
+    String clientID = TOPIC_INIT + macAddress;  // Unique client ID per device
 
-    if (client.connect(clientID.c_str())) {
+    if (client.connect(
+          clientID.c_str(),           // Client ID
+          lwtTopic.c_str(),           // LWT Topic
+          1,                          // QoS
+          true,                       // Retain
+          lwtMessageOffline.c_str())  // LWT Message
+    ) {
+      publishMQTT(lwtTopic.c_str(), lwtMessageOnline.c_str(), true);
       Serial.println("Connected to MQTT!");
     } else {
       Serial.print("Failed. RC: ");
@@ -220,12 +239,12 @@ void reconnectMQTT() {
 
 // Builds and publishes a JSON payload containing all sensor data to MQTT
 void sendSensorPayload() {
-  String topic = TOPIC_INIT + "/" + chipID;
+  String topic = TOPIC_INIT + "/" + macAddress + "/" + "sensor_data";
 
   StaticJsonDocument<256> doc;
 
   doc["ip"] = WiFi.status() == WL_CONNECTED ? WiFi.localIP().toString() : "0.0.0.0";
-  doc["mac"] = WiFi.macAddress();
+  doc["mac"] = macAddress;
   doc["chip_id"] = chipID;
   doc["temperature"] = temperature;
   doc["humidity"] = humidity;
@@ -235,7 +254,7 @@ void sendSensorPayload() {
   String payload;
   serializeJson(doc, payload);
 
-  publishMQTT(topic, payload);
+  publishMQTT(topic, payload, false);
 }
 
 void setup() {
@@ -248,8 +267,6 @@ void setup() {
 
   pinMode(RAIN_SENSOR_PIN, INPUT);
   pinMode(GAS_SENSOR_PIN, INPUT);
-
-  chipID = getChipID();  // Assigned once, used throughout the program
 
   WiFi.disconnect(true);
   WiFi.mode(WIFI_STA);
@@ -264,6 +281,9 @@ void setup() {
 
   Serial.println("Start connecting device to WiFi access point...");
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+
+  macAddress = getMACAddress();  // Assigned once, used throughout the program
+  chipID = getChipID();          // Assigned once, used throughout the program
 
   delay(1000);
 
