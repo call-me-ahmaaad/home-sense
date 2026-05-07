@@ -1,0 +1,12 @@
+{
+    "require": {
+        "bluerhinos/phpmqtt": "^1.0",
+        "monolog/monolog": "^3.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/",
+            "App\\Infrastructure\\": "infrastructure/"
+        }
+    }
+}

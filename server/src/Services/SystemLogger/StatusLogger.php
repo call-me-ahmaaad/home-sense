@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Services\SystemLogger;
+
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
+class StatusLogger
+{
+    private Logger $logger;
+
+    public function __construct()
+    {
+        $this->logger = new Logger('homesense');
+
+        $this->logger->pushHandler(
+            new StreamHandler(__DIR__ . '/../../../logs/status.log', Logger::DEBUG)
+        );
+    }
+
+    public function info(string $message, array $context = []): void
+    {
+        $this->logger->info($message, $context);
+    }
+
+    public function critical(string $message, array $context = []): void
+    {
+        $this->logger->critical($message, $context);
+    }
+}
