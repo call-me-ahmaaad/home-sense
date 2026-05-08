@@ -1,0 +1,4 @@
+#define WIFI_SSID "YOUR_WIFI_SSID"
+#define WIFI_PASSWORD "YOUR_WIFI_PASSWORD"
+#define MQTT_SERVER "YOUR_MQTT_SERVER"
+#define MQTT_PORT "YOUR_MQTT_PORT" // Without double quote
