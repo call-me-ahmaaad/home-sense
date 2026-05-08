@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\MQTT;
 
-use App\Repositories\SensorDataRepository;
+use App\Repositories\Write\SensorDataRepository;
 use App\Services\SensorDataProcess;
 use Exception;
 

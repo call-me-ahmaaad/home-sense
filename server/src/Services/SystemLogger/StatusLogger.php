@@ -27,4 +27,9 @@ class StatusLogger
     {
         $this->logger->critical($message, $context);
     }
+
+    public function error(string $message, array $context = []): void
+    {
+        $this->logger->error($message, $context);
+    }
 }

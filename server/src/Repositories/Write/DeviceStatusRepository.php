@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Write;
 
 use App\Exceptions\Connections\DatabaseException;
 use App\Services\SystemLogger\StatusLogger;
 use PDO;
 use PDOException;
 
-class SensorStatusRepository
+class DeviceStatusRepository
 {
     private PDO $pdo;
 
@@ -19,27 +19,27 @@ class SensorStatusRepository
         $this->statusLogger = $statusLogger;
     }
 
-    public function insert(bool $value)
+    public function insert(string $value)
     {
         $this->insertStatus($value);
     }
 
-    private function insertStatus(bool $value)
+    private function insertStatus(string $value)
     {
         try {
             $stmt = $this->pdo->prepare("INSERT INTO device_status (status) VALUES (:status)");
 
             $stmt->execute([
-                ":status" => (int) $value
+                ":status" => $value
             ]);
 
-            $this->statusLogger->info('Succesfully insert status to database', [
+            $this->statusLogger->info('Successfully insert status to database', [
                 'status' => $value
             ]);
         } catch (PDOException $error) {
             $this->statusLogger->info('Failed to insert device status to table');
 
-            throw new DatabaseException("[ERROR][INSERT ERROR] Failed to insert device status to table!");
+            throw new DatabaseException("Failed to insert device status to table");
         }
     }
 }

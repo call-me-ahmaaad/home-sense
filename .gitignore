@@ -1,1 +1,5 @@
 edge/homeSense/config.h
+server/config/mqtt.php
+server/config/database.php
+server/vendor/
+server/logs/

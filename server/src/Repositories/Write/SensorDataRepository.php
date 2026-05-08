@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Write;
 
 use App\Models\SensorData;
 use App\Exceptions\Connections\DatabaseException;
@@ -36,13 +36,13 @@ class SensorDataRepository
                 ":temperature" => $value
             ]);
 
-            $this->sensorDataLogger->info('Succesfully insert temperature to database', [
+            $this->sensorDataLogger->info('Successfully insert temperature to database', [
                 'temperature' => $value
             ]);
         } catch (PDOException $error) {
             $this->sensorDataLogger->error('Failed to insert temperature to table');
 
-            throw new DatabaseException("[ERROR][INSERT ERROR] Failed to insert temperature to table!");
+            throw new DatabaseException("Failed to insert temperature to table");
         }
     }
 
@@ -55,13 +55,13 @@ class SensorDataRepository
                 ":humidity" => $value
             ]);
 
-            $this->sensorDataLogger->info('Succesfully insert humidity to database', [
+            $this->sensorDataLogger->info('Successfully insert humidity to database', [
                 'humidity' => $value
             ]);
         } catch (PDOException $error) {
             $this->sensorDataLogger->error('Failed to insert humidity to table');
 
-            throw new DatabaseException("[ERROR][INSERT ERROR] Failed to insert humidity to table!");
+            throw new DatabaseException("Failed to insert humidity to table");
         }
     }
 
@@ -74,13 +74,13 @@ class SensorDataRepository
                 ":rain_status" => (int) $value
             ]);
 
-            $this->sensorDataLogger->info('Succesfully insert rain_status to database', [
+            $this->sensorDataLogger->info('Successfully insert rain_status to database', [
                 'rain_status' => $value
             ]);
         } catch (PDOException $error) {
             $this->sensorDataLogger->error('Failed to insert rain status to table');
 
-            throw new DatabaseException("[ERROR][INSERT ERROR] Failed to insert rain_status to table {$value}!");
+            throw new DatabaseException("Failed to insert rain_status to table");
         }
     }
 
@@ -93,13 +93,13 @@ class SensorDataRepository
                 ":gas_level" => $value
             ]);
 
-            $this->sensorDataLogger->info('Succesfully insert gas level to database', [
+            $this->sensorDataLogger->info('Successfully insert gas level to database', [
                 'gas_level' => $value
             ]);
         } catch (PDOException $error) {
             $this->sensorDataLogger->error('Failed to insert gas level to table');
 
-            throw new DatabaseException("[ERROR][INSERT ERROR] Failed to insert gas level to table!");
+            throw new DatabaseException("Failed to insert gas level to table");
         }
     }
 }

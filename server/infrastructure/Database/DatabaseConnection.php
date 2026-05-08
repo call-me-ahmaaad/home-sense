@@ -29,8 +29,7 @@ class DatabaseConnection
             $conn = new PDO("mysql:host=$host;dbname=$dbName", $username, $password);
 
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-            echo "[INFO][SUCCESS] Successfully connected to database!" . PHP_EOL;
+            
             $this->statusLogger->info('Successfully connected to database', [
                 'host' => $host,
                 'db_name' => $dbName
@@ -40,7 +39,7 @@ class DatabaseConnection
         } catch (PDOException $error) {
             $this->statusLogger->critical('Failed to connect to database');
 
-            throw new DatabaseException("[ERROR][CONNECTION ERROR] Failed to connect to database!");
+            throw new DatabaseException("Failed to connect to database!");
         }
     }
 }

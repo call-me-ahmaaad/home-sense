@@ -1,32 +1,38 @@
 <?php
 
-require_once __DIR__ . '/vendor/autoload.php';
-use App\Controllers\SensorDataController;
-use App\Controllers\SensorStatusController;
-use App\Infrastructure\Database\DatabaseConnection;
-use App\MQTT\MqttConnection;
-use App\MQTT\MqttSubscriber;
-use App\Repositories\SensorDataRepository;
-use App\Repositories\SensorStatusRepository;
+$app = require_once __DIR__ . '/bootstrap/app.php';
+
 use App\Services\SensorDataProcess;
-use App\Services\SystemLogger\{SensorDataLogger, StatusLogger};
-
-$dbConfig = require __DIR__ . '/config/databaseConfig.php';
-$mqttConfig = require __DIR__ . '/config/mqttConfig.php';
-
-$sensorDataLogger = new SensorDataLogger();
-$statusLogger = new StatusLogger();
-
-$dbConnection = new DatabaseConnection($dbConfig, $statusLogger)->connect();
-$mqttConnection = new MqttConnection($mqttConfig, $statusLogger)->connect();
+use App\Repositories\Write\SensorDataRepository;
+use App\Repositories\Write\DeviceStatusRepository;
+use App\Controllers\MQTT\SensorDataController;
+use App\Controllers\MQTT\DeviceStatusController;
+use App\MQTT\MqttSubscriber;
 
 $sensorDataProcessor = new SensorDataProcess();
 
-$sensorDataRepository = new SensorDataRepository($dbConnection, $sensorDataLogger);
-$sensorStatusRepository = new SensorStatusRepository($dbConnection, $statusLogger);
+$sensorDataRepository = new SensorDataRepository(
+    $app['pdo'],
+    $app['sensorDataLogger']
+);
 
-$sensorDataController = new SensorDataController($sensorDataProcessor, $sensorDataRepository);
-$sensorStatusController = new SensorStatusController($sensorStatusRepository);
+$deviceStatusRepository = new DeviceStatusRepository(
+    $app['pdo'],
+    $app['statusLogger']
+);
 
-$sensorDataSubscriber = new MqttSubscriber($mqttConnection, $sensorDataController, $sensorStatusController, $statusLogger);
+$sensorDataController = new SensorDataController(
+    $sensorDataProcessor,
+    $sensorDataRepository
+);
+
+$deviceStatusController = new DeviceStatusController($deviceStatusRepository);
+
+$sensorDataSubscriber = new MqttSubscriber(
+    $app['phpMqtt'],
+    $sensorDataController,
+    $deviceStatusController,
+    $app['statusLogger']
+);
+
 $sensorDataSubscriber->subscribe();

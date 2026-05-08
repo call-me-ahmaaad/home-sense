@@ -26,7 +26,6 @@ class MqttConnection
         $mqtt = new phpMQTT($host, $port, $clientId);
 
         if ($mqtt->connect(true)) {
-            echo "[INFO][SUCCESS] Successfully connected to MQTT!" . PHP_EOL;
             $this->statusLogger->info('Successfully connected to MQTT!', [
                 'host' => $host,
                 'port' => $port,
@@ -37,7 +36,7 @@ class MqttConnection
         } else {
             $this->statusLogger->critical('Failed to connect to MQTT');
 
-            throw new MqttException("[ERROR][CONNECTION ERROR] Failed to connect to MQTT");
+            throw new MqttException("Failed to connect to MQTT");
         }
     }
 }

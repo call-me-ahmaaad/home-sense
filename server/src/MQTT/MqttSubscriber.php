@@ -4,8 +4,7 @@ namespace App\MQTT;
 
 use App\Exceptions\Connections\MqttException;
 use Bluerhinos\phpMQTT;
-use App\Controllers\SensorDataController;
-use App\Controllers\SensorStatusController;
+use App\Controllers\MQTT\{SensorDataController, DeviceStatusController};
 use Exception;
 use App\Services\SystemLogger\StatusLogger;
 
@@ -13,14 +12,14 @@ class MqttSubscriber
 {
     private phpMQTT $mqttConnection;
     private SensorDataController $sensorDataController;
-    private SensorStatusController $sensorStatusController;
+    private DeviceStatusController $deviceStatusController;
     private StatusLogger $statusLogger;
 
-    public function __construct(phpMQTT $mqttConnection, SensorDataController $sensorDataController, SensorStatusController $sensorStatusController, StatusLogger $statusLogger)
+    public function __construct(phpMQTT $mqttConnection, SensorDataController $sensorDataController, DeviceStatusController $deviceStatusController, StatusLogger $statusLogger)
     {
         $this->mqttConnection = $mqttConnection;
         $this->sensorDataController = $sensorDataController;
-        $this->sensorStatusController = $sensorStatusController;
+        $this->deviceStatusController = $deviceStatusController;
         $this->statusLogger = $statusLogger;
     }
 
@@ -36,7 +35,7 @@ class MqttSubscriber
             "home_sense/C8F09E9AED08/status" => [
                 "qos" => 0,
                 "function" => function ($topic, $message) {
-                    $this->sensorStatusController->handle($message);
+                    $this->deviceStatusController->handle($message);
                 }
             ]
         ];
@@ -52,7 +51,7 @@ class MqttSubscriber
         } catch (Exception $error) {
             $this->statusLogger->critical('Failed to subscribe to topic');
 
-            throw new MqttException("[ERROR][CONNECTION ERROR] Failed to subscribe to topic");
+            throw new MqttException("Failed to subscribe to topic");
         }
     }
 }
