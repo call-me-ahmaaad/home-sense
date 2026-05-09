@@ -118,15 +118,19 @@ void getRainStatus() {
 // Note: R0 should be re-calibrated in clean air for accurate real-world readings.
 void getGasLevel() {
   int adcValue = analogRead(GAS_SENSOR_PIN);
+  float voltage = adcValue * (3.3 / 4095.0);
 
-  float voltage = adcValue * (3.3 / 4095.0);  // Convert 12-bit ADC value to voltage
+  // Guard division by zero
+  if (voltage < 0.01) return;
 
-  float RL = 10.0;                              // Load resistance in kΩ
-  float Rs = ((3.3 - voltage) / voltage) * RL;  // Sensor resistance at current gas level
-
-  float R0 = 10.0;  // Baseline resistance in clean air (calibrate this value)
+  float RL = 10.0;
+  float Rs = ((3.3 - voltage) / voltage) * RL;
+  float R0 = 10.0;
   float ratio = Rs / R0;
-  gasLevel = 26.572 * pow(ratio, -2.045);  // Datasheet curve fit for LPG
+
+  if (ratio <= 0) return;
+
+  gasLevel = 26.572 * pow(ratio, -2.045);
 }
 
 // Reads temperature and humidity from XY-MD02 via Modbus RTU (slave ID = 1).
@@ -257,7 +261,7 @@ void initMQTT() {
 void reconnectMQTT() {
   if (WiFi.status() != WL_CONNECTED) return;
 
-  String lwtTopic = TOPIC_INIT + "/" + macAddress + "/status";
+  String lwtTopic = TOPIC_INIT + "/" + "status";
   String lwtMessageOffline = "{\"status\":\"offline\"}";
   String lwtMessageOnline = "{\"status\":\"online\"}";
 
@@ -289,7 +293,7 @@ void reconnectMQTT() {
 // Topic: home_sense/<macAddress>/data
 // Payload fields: temperature (°C), humidity (%), rain_status (0/1), gas_level (ppm)
 void sendSensorPayload() {
-  String topic = TOPIC_INIT + "/" + macAddress + "/data";
+  String topic = TOPIC_INIT + "/" + "data";
 
   char payload[256];
   snprintf(
