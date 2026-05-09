@@ -26,13 +26,13 @@ class MqttSubscriber
     public function subscribe(): void
     {
         $topics = [
-            "home_sense/C8F09E9AED08/data" => [
+            "home_sense/data" => [
                 "qos" => 0,
                 "function" => function ($topic, $message) {
                     $this->sensorDataController->handle($message);
                 }
             ],
-            "home_sense/C8F09E9AED08/status" => [
+            "home_sense/status" => [
                 "qos" => 0,
                 "function" => function ($topic, $message) {
                     $this->deviceStatusController->handle($message);

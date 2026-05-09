@@ -3,6 +3,7 @@
 namespace App\Controllers\API;
 
 use App\Repositories\Read\DeviceStatusRepository;
+use Exception;
 
 class DeviceStatusController
 {
@@ -17,11 +18,20 @@ class DeviceStatusController
     {
         header("Content-Type: application/json");
 
-        $latestData = $this->deviceStatusRepository->getLatestData();
+        try {
+            $latestData = $this->deviceStatusRepository->getLatestData();
 
-        echo json_encode([
-            "success" => true,
-            "data" => $latestData
-        ]);
+            echo json_encode([
+                "success" => true,
+                "data" => $latestData
+            ]);
+        } catch (Exception $error) {
+            http_response_code(500);
+
+            echo json_encode([
+                "success" => false,
+                "reason" => $error->getMessage()
+            ]);
+        }
     }
 }

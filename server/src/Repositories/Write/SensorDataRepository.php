@@ -40,9 +40,7 @@ class SensorDataRepository
                 'temperature' => $value
             ]);
         } catch (PDOException $error) {
-            $this->sensorDataLogger->error('Failed to insert temperature to table');
-
-            throw new DatabaseException("Failed to insert temperature to table");
+            throw new DatabaseException("Failed to insert temperature to table. Temperature: {$value}");
         }
     }
 
@@ -59,9 +57,7 @@ class SensorDataRepository
                 'humidity' => $value
             ]);
         } catch (PDOException $error) {
-            $this->sensorDataLogger->error('Failed to insert humidity to table');
-
-            throw new DatabaseException("Failed to insert humidity to table");
+            throw new DatabaseException("Failed to insert humidity to table. Humidity: {$value}");
         }
     }
 
@@ -74,13 +70,11 @@ class SensorDataRepository
                 ":rain_status" => (int) $value
             ]);
 
-            $this->sensorDataLogger->info('Successfully insert rain_status to database', [
+            $this->sensorDataLogger->info('Successfully insert rain status to database', [
                 'rain_status' => $value
             ]);
         } catch (PDOException $error) {
-            $this->sensorDataLogger->error('Failed to insert rain status to table');
-
-            throw new DatabaseException("Failed to insert rain_status to table");
+            throw new DatabaseException("Failed to insert rain status to table. Rain status: {$value}");
         }
     }
 
@@ -97,9 +91,7 @@ class SensorDataRepository
                 'gas_level' => $value
             ]);
         } catch (PDOException $error) {
-            $this->sensorDataLogger->error('Failed to insert gas level to table');
-
-            throw new DatabaseException("Failed to insert gas level to table");
+            throw new DatabaseException("Failed to insert gas level to table. Gas level {$value}");
         }
     }
 }

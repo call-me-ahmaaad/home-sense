@@ -2,14 +2,14 @@
 
 $app = require_once __DIR__ . '/bootstrap/app.php';
 
-use App\Services\SensorDataProcess;
+use App\Services\SensorDataProcessor;
 use App\Repositories\Write\SensorDataRepository;
 use App\Repositories\Write\DeviceStatusRepository;
 use App\Controllers\MQTT\SensorDataController;
 use App\Controllers\MQTT\DeviceStatusController;
 use App\MQTT\MqttSubscriber;
 
-$sensorDataProcessor = new SensorDataProcess();
+$sensorDataProcessor = new SensorDataProcessor();
 
 $sensorDataRepository = new SensorDataRepository(
     $app['pdo'],
@@ -23,10 +23,11 @@ $deviceStatusRepository = new DeviceStatusRepository(
 
 $sensorDataController = new SensorDataController(
     $sensorDataProcessor,
-    $sensorDataRepository
+    $sensorDataRepository,
+    $app['sensorDataLogger']
 );
 
-$deviceStatusController = new DeviceStatusController($deviceStatusRepository);
+$deviceStatusController = new DeviceStatusController($deviceStatusRepository, $app['statusLogger']);
 
 $sensorDataSubscriber = new MqttSubscriber(
     $app['phpMqtt'],

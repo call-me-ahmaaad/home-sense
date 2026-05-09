@@ -33,13 +33,11 @@ class DeviceStatusRepository
                 ":status" => $value
             ]);
 
-            $this->statusLogger->info('Successfully insert status to database', [
+            $this->statusLogger->info('Successfully insert device status to database', [
                 'status' => $value
             ]);
         } catch (PDOException $error) {
-            $this->statusLogger->info('Failed to insert device status to table');
-
-            throw new DatabaseException("Failed to insert device status to table");
+            throw new DatabaseException("Failed to insert device status to table. Device status: {$value}");
         }
     }
 }
