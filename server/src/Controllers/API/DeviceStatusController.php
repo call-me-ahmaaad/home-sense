@@ -16,8 +16,6 @@ class DeviceStatusController
 
     public function getLatestData()
     {
-        header("Content-Type: application/json");
-
         try {
             $latestData = $this->deviceStatusRepository->getLatestData();
 

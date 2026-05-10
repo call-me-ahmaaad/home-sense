@@ -19,8 +19,6 @@ class ControlLedController
 
     public function receiveData()
     {
-        header("Content-Type: application/json");
-
         $message = json_decode(file_get_contents("php://input"), true);
 
         if (!$message) {

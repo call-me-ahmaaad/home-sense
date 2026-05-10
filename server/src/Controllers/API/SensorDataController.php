@@ -16,8 +16,6 @@ class SensorDataController
 
     public function getLatestData()
     {
-        header("Content-Type: application/json");
-
         try {
             $latestData = $this->sensorDataRepository->getLatestData();
 
