@@ -123,7 +123,7 @@ void reconnectMQTT() {
       // Subscribe to each LED's topic: home_sense/<mac>/led/<color>
       Serial.println("Subscribed to: ");
       for (String led : leds) {
-        String fullTopic = TOPIC_INIT + "/"  + "led" + "/" + led;
+        String fullTopic = TOPIC_INIT + "/" + "led" + "/" + led;
         client.subscribe(fullTopic.c_str());
 
         Serial.print("   - ");
