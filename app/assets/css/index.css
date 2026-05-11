@@ -69,10 +69,6 @@ body {
     grid-area: humid;
 }
 
-.dashboard-card--chart {
-    grid-area: tempHumidChart;
-}
-
 .dashboard-card--rain {
     grid-area: rain;
 }
@@ -109,6 +105,7 @@ body {
     font-weight: 600;
     font-size: 2.2rem;
     text-transform: uppercase;
+    color: white;
 }
 
 #temp-value.value--cold{
@@ -206,12 +203,8 @@ body {
     background-color: var(--led-indicator-blue);
 }
 
-.dashboard-card--chart {
-    display: none;
-}
-
 @media (min-width: 768px) {
-    .dashboard_wrapper {
+    .dashboard-wrapper {
         grid-template-columns: 0.5fr 0.75fr 0.75fr 0.5fr;
         grid-template-areas:
             "temp temp humid humid"
@@ -248,7 +241,7 @@ body {
         padding: 0;
     }
 
-    .dashboard_wrapper {
+    .dashboard-wrapper {
         grid-template-columns: 1.5fr 1.5fr 1.5fr 1.5fr;
         grid-template-areas:
             "temp temp humid humid"
@@ -274,13 +267,9 @@ body {
 }
 
 @media (min-width: 1536px) {
-    .dashboard-card--chart {
-        display: block;
-    }
-
-    .dashboard_wrapper {
+    .dashboard-wrapper {
         grid-template-areas:
-            "temp humid tempHumidChart tempHumidChart"
+            "temp temp humid humid"
             "rain gas gas ledControl";
 
         max-width: 1400px;

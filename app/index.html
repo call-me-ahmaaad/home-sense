@@ -9,7 +9,7 @@
     <meta name="description" content="An implementation of IoT on a house">
 
     <title>Smart Home Monitoring</title>
-    <link rel="shortcut icon" href="/img/energy-monitoring.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/app/assets/img/favicon.ico" type="image/x-icon">
 
     <link rel="stylesheet" href="/app/assets/css/index.css">
 </head>
@@ -18,35 +18,32 @@
     <main class="dashboard-wrapper">
         <section class="dashboard-card dashboard-card--temp">
             <span class="dashboard-card__header">Temperature</span>
-            <span class="dashboard-card__value" id="temp-value">0.00°C</span>
+            <span class="dashboard-card__value" id="temp-value">-</span>
         </section>
         <section class="dashboard-card dashboard-card--humid">
             <span class="dashboard-card__header">Humidity</span>
-            <span class="dashboard-card__value" id="humid-value">0.00%</span>
-        </section>
-        <section class="dashboard-card dashboard-card--chart">
-            <span id="sensor-chart"></span>
+            <span class="dashboard-card__value" id="humid-value">-</span>
         </section>
         <section class="dashboard-card dashboard-card--rain">
             <span class="dashboard-card__header">Raindrop</span>
-            <span class="dashboard-card__value" id="rain-value">RAIN</span>
+            <span class="dashboard-card__value" id="rain-value">-</span>
         </section>
         <section class="dashboard-card dashboard-card--gas">
             <span class="dashboard-card__header">Gas Value</span>
-            <span class="dashboard-card__value" id="gas-value">0 ppm</span>
+            <span class="dashboard-card__value" id="gas-value">-</span>
         </section>
         <section class="dashboard-card dashboard-card--led">
             <span class="dashboard-card__header">LEDs</span>
             <div class="dashboard-card__led-control">
-                <button class="led-button led-button--red" data-led="red">
+                <button type="button" class="led-button led-button--red" data-led="red">
                     <div class="led-button__indicator"></div>
                     Red
                 </button>
-                <button class="led-button led-button--green" data-led="green">
+                <button type="button" class="led-button led-button--green" data-led="green">
                     <div class="led-button__indicator"></div>
                     Green
                 </button>
-                <button class="led-button led-button--blue" data-led="blue">
+                <button type="button" class="led-button led-button--blue" data-led="blue">
                     <div class="led-button__indicator"></div>
                     Blue
                 </button>
@@ -54,7 +51,7 @@
         </section>
     </main>
 
-    <script type="module" src="/app/assets/js/index.js"></script>
+    <script type="module" src="/app/assets/js/views/index.js"></script>
 </body>
 
 </html>

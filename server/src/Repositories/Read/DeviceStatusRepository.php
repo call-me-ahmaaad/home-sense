@@ -20,13 +20,15 @@ class DeviceStatusRepository
         return $this->getLatestDeviceStatus();
     }
 
-    private function getLatestDeviceStatus()
+    private function getLatestDeviceStatus(): ?array
     {
         try {
             $stmt = $this->pdo->prepare("SELECT id,  status, created_at FROM device_status ORDER BY id DESC LIMIT 1");
             $stmt->execute();
 
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return $result ?: null;
         } catch (PDOException $error) {
             throw new DatabaseException('Failed to fetch device status from database!');
         }
