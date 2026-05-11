@@ -69,15 +69,42 @@ Where's the line between "AI-assisted" and "AI did it for you"? Genuinely, I'm n
 ![Static Badge](https://img.shields.io/badge/PHP-%23787CB4?style=for-the-badge&logo=php&logoColor=white)
 ![Static Badge](https://img.shields.io/badge/MySQL-%23086590?style=for-the-badge&logo=mysql&logoColor=white)
 ![Static Badge](https://img.shields.io/badge/MQTT-%236B086B?style=for-the-badge&logo=mqtt&logoColor=white)
+![Static Badge](https://img.shields.io/badge/Arduino-%23087885?style=for-the-badge&logo=arduino)
+![Static Badge](https://img.shields.io/badge/Espressif-%23FF363A?style=for-the-badge&logo=espressif&logoColor=white)
 
 **Hardware**
 | Component | Description |
 |-----------|-------------|
-| ESP32 | Main microcontroller |
+| ESP32 | Microcontroller for monitoring |
+| ESP8266 | Microcontroller for LEDs control |
 | XY-MD02 | Temperature & humidity sensor |
 | Rainfall Sensor | Detects rain/water presence |
 | MQ-5 | Gas sensor |
-| LED | Controllable light output |
+| LEDs | Controllable light output and indicator |
+
+---
+
+# 🎬 Preview
+
+> A full walkthrough of HomeSense in action — from the hardware setup to the live dashboard.
+
+[![YouTube](https://img.shields.io/badge/YouTube-Full_System_Demo-red?style=for-the-badge&logo=youtube)](https://www.youtube.com/watch?v=-2NnEMKvy1M)
+[![YouTube](https://img.shields.io/badge/YouTube-Dashboard_Demo-red?style=for-the-badge&logo=youtube)](https://www.youtube.com/watch?v=Kpd37-ywLPE&t=5s)
+
+## Screenshot
+
+| Dashboard | Sensor Data Log | MQTT Explorer |
+|:---------:|:---------------:|:-------------:|
+| <img width="250" src="https://github.com/user-attachments/assets/520b9167-3032-40bb-b8da-86606445fc85"> | <img width="250" src="https://github.com/user-attachments/assets/82492334-8553-4e03-b96e-76d67db51cad"> | <img src="https://github.com/user-attachments/assets/24704d6c-a2d1-400e-a99d-0ac324e4770c" width="250"> |
+
+## Hardware
+
+
+| Active | Monitoring (ESP32) | LEDs Control (ESP8266) |
+|:---------:|:---------------:|:--------------:|
+| <img width="250" src="https://github.com/user-attachments/assets/6e3f4f17-a97f-4e5b-8194-db83198b3ff4"> | <img width="250" src="https://github.com/user-attachments/assets/164bd072-4944-4150-8944-c43bb2769636"> | <img width="250" src="https://github.com/user-attachments/assets/1b2f38f3-452f-480a-87e3-c0ba89281255"> |
+
+> *Sorry for the camera quality 🙏*
 
 ---
 
