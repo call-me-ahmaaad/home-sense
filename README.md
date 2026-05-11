@@ -337,6 +337,12 @@ OFF
 
 ---
 
+# 📄 License
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+
+---
+
 ## 🙏 Acknowledgment
 
 HomeSense started as a final project for the MSIB IoT Developer Program organized by **PT Arkatama Multi Solusindo**. A big thank you to everyone at Arkatama — especially the instructors who guided and equipped me with the knowledge that made this possible. To my friends who were there throughout the whole process, thank you for the company.
