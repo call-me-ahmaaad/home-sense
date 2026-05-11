@@ -7,5 +7,4 @@ return [
     "username" => "your_username",
     "password" => "your_password",
     "keepAlive" => 60,
-    "macAddress" => "your_esp32_macAddress"
 ];
