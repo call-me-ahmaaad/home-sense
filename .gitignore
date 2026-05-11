@@ -1,4 +1,5 @@
-edge/homeSense/config.h
+edge/homeSense_ledControl/config.h
+edge/homeSense_monitoring/config.h
 server/config/mqtt.php
 server/config/database.php
 server/vendor/
