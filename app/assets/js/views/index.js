@@ -18,7 +18,7 @@ async function updateDashboard() {
         const isRaining = sensorData.rain_status != null ? sensorData.rain_status.is_raining === 1 : null;
         const gasLevel = sensorData.gas_level?.gas_level ?? null;
 
-        if (deviceStatus.status === "offline" || deviceStatus === null) {
+        if (deviceStatus === null || deviceStatus.status === "offline") {
             sensorValue.forEach(value => value.textContent = "-");
         } else {
             updateSensorCard(
