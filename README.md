@@ -2,7 +2,7 @@
 
 > A smart home environment monitoring system that keeps tabs on temperature, humidity, rainfall, and gas levels — with remote LED control on top.
 
-![Static Badge](https://img.shields.io/badge/STATUS-In--progress-%23E16B16?style=for-the-badge)
+![Static Badge](https://img.shields.io/badge/status-completed-green?style=for-the-badge)
 ![Static Badge](https://img.shields.io/badge/LICENSE-MIT-blue?style=for-the-badge)
 
 # 📌 What is this?
